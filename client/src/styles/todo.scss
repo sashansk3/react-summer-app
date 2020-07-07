@@ -1,0 +1,20 @@
+.todo {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 60%;
+  height: 4rem;
+  box-shadow: 0 0 10px black;
+  margin-top: 10px;
+  background-color: whitesmoke;
+
+  &:hover{
+    // box-shadow: 0 0 10px greenyellow;
+  }
+}
+
+.todo__top {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+}

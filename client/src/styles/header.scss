@@ -1,0 +1,30 @@
+.header{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  background-color: #494949;
+  border-bottom: 3px solid #202020;
+  height: 70px;
+  justify-content: space-between;
+
+  &-links{
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+    margin: auto 0;
+  }
+  
+  button {
+    padding: 0 10px;
+    border: none;
+    background-color: #00c4d0;
+    color: #ffffff;
+    font-size: 25px;  
+    text-transform: uppercase;
+    border-radius: 7px;
+  }
+
+  button:hover {
+    box-shadow: 0 0 5px white;
+  }
+}
