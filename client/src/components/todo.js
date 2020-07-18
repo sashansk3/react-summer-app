@@ -1,30 +1,32 @@
-import React from "react"
+import React, { useRef } from "react"
 import { useDispatch }  from "react-redux"
-import { deleteTodo, openPopUp, completeTodo } from "../actions/action.todo.js"
+import { showTodo } from "../actions/action.todo.js"
 import "../styles/todo.scss"
 
-export default function Todo(props){
+export default function Todo({todo}){
   const
+    that = useRef(null),
     dispatch = useDispatch(),
-    additionalClassName = !props.todo.status && props.todo.deadline !== "-"? checkDate(props.todo.deadline): "green",
-    underline = props.todo.status? "underline": "";
+    additionalClassName = !todo.status && todo.deadline !== "-"? checkDate(todo.deadline): "green",
+    completed = todo.status? "completed": "";
 
-  const 
-    deleteTodoAction   = e => dispatch(deleteTodo(e.target.id)),
-    openPopUpAction    = e => dispatch(openPopUp(e.target.id)),
-    completeTodoAction = e => dispatch(completeTodo(e.target.id));
+  const setTodoAction = () => {
+    let prevElem = document.querySelector(".active")
+    prevElem && prevElem.classList.remove("active")
+    that.current.classList.add("active")
+    dispatch(showTodo(todo.id))
+  }
 
   return (
-    <div className={"todo " + additionalClassName} id={"todo"+props.todo.id}>
-      <div className="todo__top">
-        <small className={"todo__top__deadline "+additionalClassName+"Date"}>{props.todo.deadline}</small>
-        <div>
-          <span className="todo__top__editBtn" onClick={openPopUpAction} id={props.todo.id}>&#9998;</span>
-          <span className="todo__top_deleteBtn" id={props.todo.id} onClick={deleteTodoAction}>&#9746;</span>
-        </div>
-      </div>
-      <div className={`todo__title ${underline}`} onClick={completeTodoAction} id={props.todo.id}>
-        {props.todo.title}  
+    <div className={"todo " + additionalClassName} ref={that} onClick={setTodoAction}>
+      <small 
+        className={"todo__top__deadline "+additionalClassName+"Date"}
+      >
+        {todo.deadline?todo.deadline:"-"}
+      </small>
+      
+      <div className={`todo__title ${completed}`}>
+        {todo.title}  
       </div>
     </div>
   )

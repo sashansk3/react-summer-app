@@ -20,15 +20,11 @@ export default function AuthReg() {
     let that = e.target
     if(that.classList.contains("choise"))
       return
-
     that.classList.toggle("choise")
-
     isLogin
       ?signInBtn.current.classList.toggle("choise")
       :signUpBtn.current.classList.toggle("choise")
-
     changePage(!isLogin)
-    // Очистка полей?
   }
 
   let isUserSet = user.id
@@ -38,8 +34,8 @@ export default function AuthReg() {
         isUserSet
         ?(
           <div>
-            Здравствуйте, {user.login}
-            <br/>
+            {/* <p>Здравствуйте, {user.login}</p> */}
+            <h5>Личный кабинет</h5>
             <button className="authReg-exit" onClick={() => dispatch(unsetUser())}>Exit</button>
           </div>
         )

@@ -19,7 +19,7 @@ export default function Header() {
         {
           entryPoints.map(({title, href}, id) => 
             <Link to={href} key={id}>
-              <button className="header-link">{title}</button>
+              <span className="header-link">{title}</span>
             </Link>
           )
         }

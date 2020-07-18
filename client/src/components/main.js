@@ -11,6 +11,7 @@ import EditSubject from "./editSubject"
 import Labs from "./labs"
 
 import "../styles/all.scss"
+import Messages from "./messages"
 export default function Router(){
   // const user = useSelector(store => store.user.user)
   return(
@@ -23,6 +24,7 @@ export default function Router(){
         <Route exact path="/subjects/edit" component={EditSubject} />
         <Route exact path="/labs" component={Labs} />
       </Switch>
+      <Messages />
     </div>
   )
 }
