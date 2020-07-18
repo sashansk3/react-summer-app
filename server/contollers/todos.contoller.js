@@ -46,8 +46,7 @@ exports.update = (req, res) => {
 
   Todos
     .update(todo, {
-      where    : {id},
-      returning: true,
+      where: {id},
     })
     .then(todos => {
       res.json(todos)

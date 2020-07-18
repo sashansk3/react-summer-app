@@ -10,6 +10,10 @@ module.exports = (Sequelize, sequelize) => {
       type     : Sequelize.TEXT,
       allowNull: false
     },
+    content: {
+      type     : Sequelize.TEXT,
+      allowNull: true
+    },
     deadline: {
       type     : Sequelize.TEXT,
       allowNull: false
