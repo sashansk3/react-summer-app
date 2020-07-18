@@ -1,0 +1,47 @@
+.todo_editAdd {
+  display: grid;
+  grid-template: 50px 1fr 50px 50px 25px / 1fr 1fr;
+  align-items: center;
+
+  input, textarea {
+    width: 100%;
+    margin: 5px;
+    transition: resize .2s;
+    font-size: 1rem;
+  }
+
+  input {
+    height: 30px;
+  }
+
+  textarea {
+    height: 80px;
+    resize: vertical;
+  }
+
+  button {
+    transition: all .2s;
+    border-radius: 10px;
+    outline: none;
+  }
+}
+
+.todo_updateBtn {
+  background-color: hsl(123, 60%, 60%);
+
+  &:hover {
+    background-color: white;
+    color: hsl(123, 60%, 60%);
+    border: 2px solid hsl(123, 60%, 60%);
+  }
+}
+
+.todo_closeBtn {
+  background-color: hsl(360, 80%, 55%);
+
+  &:hover {
+    background-color: white;
+    color: hsl(360, 80%, 55%);
+    border: 2px solid hsl(360, 80%, 55%);
+  }
+}
