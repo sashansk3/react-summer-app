@@ -17,7 +17,6 @@ export const userReducer = (state = initialState, action) => {
     case OPEN_POPUP : return { ...state, isOpen: true}
     case CLOSE_POPUP: return { ...state, isOpen: false}
 
-    default:
-      return state
+    default: return state
   }
 }
