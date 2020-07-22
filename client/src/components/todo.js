@@ -7,9 +7,8 @@ export default function Todo({todo}){
   const
     that = useRef(null),
     dispatch = useDispatch(),
-    additionalClassName = !todo.status && todo.deadline !== "-"? checkDate(todo.deadline): "green",
+    additionalClassName = todo.deadline !== "-" && todo.deadline !== ""? checkDate(todo.deadline): "green",
     completed = todo.status? "completed": "";
-
   const setTodoAction = () => {
     let prevElem = document.querySelector(".active")
     prevElem && prevElem.classList.remove("active")
@@ -18,9 +17,9 @@ export default function Todo({todo}){
   }
 
   return (
-    <div className={"todo " + additionalClassName} ref={that} onClick={setTodoAction}>
+    <div className={`todo`} ref={that} onClick={setTodoAction}>
       <small 
-        className={"todo__top__deadline "+additionalClassName+"Date"}
+        className={`todo_deadline todo_deadline__${additionalClassName}`}
       >
         {todo.deadline?todo.deadline:"-"}
       </small>
@@ -37,14 +36,15 @@ function checkDate(deadlineString){
     day = 86400000,
     additionalClassName = "green",
     deadline = new Date(deadlineString),
-    curDate  = new Date(`${new Date().getFullYear()}-${new Date().getMonth() > 10?"":"0"+(new Date().getMonth() + 1)}-${new Date().getDate()}`);
+    curDate = new Date().toISOString().split("T")[0],
+    curDateNum = new Date(curDate);
 
-  if(deadline - curDate < 0)
-    additionalClassName = "dark"
-  else if(deadline - curDate <= day)
-    additionalClassName = "red"
-  else if(deadline - curDate <= 3*day) 
-    additionalClassName = "yellow"
+  if(deadline - curDateNum < 0)
+    additionalClassName = "miss"
+  else if(deadline - curDateNum <= day)
+    additionalClassName = "alert"
+  else if(deadline - curDateNum <= 3*day) 
+    additionalClassName = "warning"
     
   return additionalClassName   
 }

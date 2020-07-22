@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 
 import Todo from "./todo"
 import EditAddTodo from "./editAddTodo"
@@ -15,9 +14,7 @@ export default function Todos(){
     todo     = useSelector(store => store.todos.todo, shallowEqual),
     editFlag = useSelector(store => store.todos.editFlag, shallowEqual);
 
-  useEffect(() => {
-    dispatch(getTodos(user.id))
-  }, [])
+  useEffect(() => dispatch(getTodos(user.id)), [])
 
   const searchTodoAction = (e) => {
     let subStr = e.target.value.toLowerCase()
@@ -27,10 +24,6 @@ export default function Todos(){
   const filterTodoAction = (e) => {
     let type = e.target.value
     dispatch(filterTodo(type))
-  }
-    
-  if(!user.id){
-    return <Redirect to="/" />
   }
   
   let mapedTodos = todos.map(todo => <Todo key = {todo.id} todo = {todo}/>)
