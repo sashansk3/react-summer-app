@@ -1,13 +1,21 @@
 .todo_editAdd {
+  width: 80%;
   display: grid;
-  grid-template: 50px 1fr 50px 50px 25px / 1fr 1fr;
+  grid-template: 50px 1fr 50px 50px 25px / 1fr 3fr;
   align-items: center;
 
   input, textarea {
     width: 100%;
     margin: 5px;
+    border-radius: 7px;
+    border: 1px solid black;
     transition: resize .2s;
     font-size: 1rem;
+    outline: none;
+    
+    &:invalid:not(:placeholder-shown) {
+      border: 2px solid hsl(360, 80%, 55%);
+    }
   }
 
   input {

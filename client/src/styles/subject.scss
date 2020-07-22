@@ -1,0 +1,34 @@
+.subject {
+  display: grid;
+  width: 10rem;
+  height: 10rem;
+  border: 1px solid black;
+  grid-template-areas: "name week"
+                       "teachers teachers"
+                       "labs type";
+  grid-template-rows: 1fr 2fr 1fr;
+}
+
+.subject_name {
+  grid-area: name;
+}
+
+.subject_week {
+  grid-area: week;
+  justify-self: end;
+  width: min-content;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.subject_teachers {
+  grid-area: teachers;
+}
+
+.subject_labs {
+  grid-area: labs;
+}
+
+.subject_type {
+  grid-area: type;
+}

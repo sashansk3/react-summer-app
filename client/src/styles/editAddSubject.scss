@@ -1,0 +1,79 @@
+.addEditSubject {
+  width: 40%;
+  margin: 10px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 50px 1fr 50px 50px 50px 30px;
+  grid-gap: 10px;
+  input {
+    border-radius: 7px;
+    border: 1px solid black;
+  }
+
+  button {
+    outline: none;
+  }
+}
+
+.addEditSubject_teachers {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  grid-gap: 5px;
+  
+}
+
+.addEditSubject_delete-teacher {
+  border: 1.5px solid hsl(360, 80%, 55%);
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  border-radius: 10px;
+  justify-self: center;
+  transition: .75s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.addEditSubject_add-teacher {
+  padding: 0 20px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  color: white;
+  background-color: hsl(360, 80%, 55%);
+  
+  &:hover {
+    background-color: white;
+    color: hsl(360, 80%, 55%);
+    border: 2px solid hsl(360, 80%, 55%);
+  }
+}
+
+.addEditSubject_add-subject {
+  transition: .2s;
+  border: 1px;
+  color: white;
+  border-radius: 10px;
+  background-color: hsl(123, 60%, 60%);
+
+  &:hover {
+    background-color: white;
+    color: hsl(123, 60%, 60%);
+    border: 2px solid hsl(123, 60%, 60%);
+  }
+}
+
+.addEditSubject_close {
+  transition: .2s;
+  border: 1px;
+  color: white;
+  border-radius: 10px;
+  background-color: hsl(360, 80%, 55%);
+  
+  &:hover {
+    background-color: white;
+    color: hsl(360, 80%, 55%);
+    border: 2px solid hsl(360, 80%, 55%);
+  }
+}

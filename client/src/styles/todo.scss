@@ -13,6 +13,19 @@
   }
 }
 
+.todo_deadline__alert {
+  color: hsl(360, 70%, 50%);
+  font-size: 1rem;
+}
+
+.todo_deadline__warning {
+  color: hsl(20, 100%, 50%);
+}
+
+.todo_deadline__green {
+  color: hsl(123, 60%, 60%);
+}
+
 .completed {
   text-decoration: line-through;
 }
