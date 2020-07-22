@@ -1,28 +1,55 @@
 import React from "react"
-// import { Switch, Route, Redirect } from 'react-router-dom'
-import { Switch, Route } from 'react-router-dom'
-// import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux"
+import { setMessage } from "../actions/message.action"
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 
 import Header from "./header"
 import Todos from "./todos"
 import Subjects from "./subjects"
-import AddSubject from "./addSubject"
-import EditSubject from "./editSubject"
+import EditAddSubject from "./editAddSubject"
 import Labs from "./labs"
 
 import "../styles/all.scss"
 import Messages from "./messages"
+
+const routes = [
+  {path: "/todos", component: Todos},
+  {path: "/subjects", component: Subjects},
+  {path: ["/subjects/edit", "/subjects/add"], component: EditAddSubject},
+  {path: "/labs", component: Labs},
+]
 export default function Router(){
-  // const user = useSelector(store => store.user.user)
+  const 
+    dispatch = useDispatch(),
+    userId   = useSelector(store => store.user.user.id),
+    location = useLocation();
+
+  if(location.state?.from.pathname && !userId){
+    const message = {
+      text: `
+        You has been redirected from url ${location.state?.from.pathname}.
+        Auth to get accsess to this url.
+        `,
+      type: "info"
+    }
+    dispatch(setMessage(message))
+  }
   return(
     <div className="App">
       <Header />
       <Switch>
-        <Route exact path="/todos" component={Todos} />
-        <Route exact path="/subjects" component={Subjects} />
-        <Route exact path="/subjects/add" component={AddSubject} />
-        <Route exact path="/subjects/edit" component={EditSubject} />
-        <Route exact path="/labs" component={Labs} />
+        <Route exact path="/" component={() => <div>Hello</div>} />
+        {
+          userId
+          ?(
+            routes.map(({path, component}) => <Route exact path={path} component={component} />)
+          ):(
+            <Redirect to={{
+              pathname: "/",
+              state: { from: location }
+            }}/>
+          )
+        }
       </Switch>
       <Messages />
     </div>
