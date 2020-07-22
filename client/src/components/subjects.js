@@ -4,25 +4,26 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux"
 
 import Subject from './subject'
 import PopUp from './popup';
-import { getSubjects, closePopUp, deleteSubject } from "../actions/action.subject"
+import { getSubjects, closePopUp, deleteSubject, setEditFlag } from "../actions/action.subject"
 import "../styles/subjects.scss"
 
 export default function Subjects() {
-  const [redirectUrl, setRedirectUrl] = useState("")
   const dispatch = useDispatch()
-  useEffect(() => {dispatch(getSubjects())}, [])
+  useEffect(() => dispatch(getSubjects()), [])
   
-  const isOpenFlag  = useSelector(store => store.subjects.isOpen, shallowEqual)
-  const showSubject = useSelector(store => store.subjects.showSubject, shallowEqual)
-  const subjects    = useSelector(store => store.subjects.subjects, shallowEqual)
+  const 
+    isOpenFlag = useSelector(store => store.subjects.isOpen, shallowEqual),
+    subjects   = useSelector(store => store.subjects.subjects, shallowEqual),
+    editFlag   = useSelector(store => store.subjects.editFlag, shallowEqual),
+    subject    = useSelector(store => store.subjects.subject, shallowEqual);
 
   const 
-    redirectToAddSubject  = () => setRedirectUrl("/subjects/add"),
-    redirectToEditSubject = () => setRedirectUrl("/subjects/edit");
+    redirectToAddSubject  = () => dispatch(setEditFlag("add")),
+    redirectToEditSubject = () => dispatch(setEditFlag("edit"));
 
-  if(redirectUrl === "/subjects/add")
+  if(editFlag === "add")
     return <Redirect to="/subjects/add"/>
-  else if(redirectUrl === "/subjects/edit"){
+  else if(editFlag === "edit"){
     dispatch(closePopUp())
     return <Redirect to="/subjects/edit"/>
   }
@@ -33,7 +34,7 @@ export default function Subjects() {
       <div className="subjects-filters">
         <button onClick={redirectToAddSubject}> add Subject </button>
       </div>
-      <div className="listOfSubjects">
+      <div className="subjects-list">
         {mapSubjects}
       </div>
       <PopUp
@@ -43,23 +44,23 @@ export default function Subjects() {
         <div className="popup-subject">
           <div className="popup-subject-header">
             <div className="popup-subject-week">
-              week: {showSubject.week}
+              week: {subject.week}
             </div>
           </div>
           <div className="popup-subject-content">
             <div className="popup-subject-teachers">
-              {showSubject.teachers?showSubject.teachers.map(teacher => <p>{teacher}</p>):""}
+              {subject.teachers?subject.teachers.map(teacher => <p>{teacher}</p>):""}
             </div>
           </div>
           <div className="popup-subject-name">
-            {showSubject.name}
+            {subject.name}
           </div>
           <div className="popup-subject-footer">
             <div className="popup-subject-labs">
-              0/{showSubject.labs}
+              0/{subject.labs}
             </div>
             <div className="popup-subject-type">
-              Type: {showSubject.type}
+              Type: {subject.type}
             </div>
             <div className="popup-subject-buttons">
               <button className="deleteBtn" onClick={() => dispatch(deleteSubject())}>delete</button>

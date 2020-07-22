@@ -13,26 +13,21 @@ export default function Subject(props){
   let {labs, name, teachers, type, week} = props.subject
   return (
     <div className="subject" onClick={openPopUpAction}>
-      <div className="subject-header">
-        <div className="subject-week">
-          {week}
-        </div>
+      <div className="subject_name">
+        {name}
       </div>
-      <div className="subject-content">
-        <div className="subject-teachers">
-          <p>{teachers[0]}</p>
-        </div>
-        <div className="subject-name">
-          {name}
-        </div>
+      <div className="subject_week">
+        {week}
       </div>
-      <div className="subject-footer">
-        <div className="subject-labs">
-          0/{labs}
-        </div>
-        <div className="subject-type">
-          {type}
-        </div>
+      <div className="subject_teachers">
+        {teachers[0]}
+        {teachers[1]}
+      </div>
+      <div className="subject_labs">
+        0/{labs}
+      </div>
+      <div className="subject_type">
+        {type}
       </div>
     </div>
   )
