@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import { useDispatch, useSelector, shallowEqual }  from "react-redux"
 import { addTodo, updateTodo, handleTodoChange, closeEditTodo } from "../actions/action.todo.js"
-import "../styles/editAdd.scss"
+import "../styles/editAddTodo.scss"
 
 const EditAddTodo = props => {
   const 
@@ -45,6 +45,8 @@ const EditAddTodo = props => {
       <input 
         data-field="title"
         placeholder="Title"
+        required
+        maxLength="40"
         onChange={handleTodoChangeAction}
         value={title}
       />
@@ -53,6 +55,7 @@ const EditAddTodo = props => {
         ref={refTextArea}
         data-field="content"
         placeholder="Content"
+        maxLength="300"
         onChange={handleTodoChangeAction}
         onInput={changeSize}
         value={content}
@@ -62,6 +65,7 @@ const EditAddTodo = props => {
         data-field="deadline"
         placeholder="Deadline"
         onChange={handleTodoChangeAction}
+        min={new Date().toISOString().split("T")[0]}
         value={deadline}
         type="date"
       />
@@ -76,7 +80,7 @@ const EditAddTodo = props => {
       />
       <button className="todo_updateBtn" onClick={action === "add"?addTodoAction:updateTodoAction}>{action === "add"?"Add":"Update"}</button>
       <button className="todo_closeBtn" onClick={() => dispatch(closeEditTodo())}>Close</button>
-    </div>
+    </div>  
   )
 }
 
