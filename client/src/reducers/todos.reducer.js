@@ -3,7 +3,6 @@ import { SET_TODOS, SET_TEMP_TODOS, SET_TODO, CLOSE_EDIT, EDIT_TODO, ADD_TODO_FO
 const initialState = {
   todos    : [],
   tempTodos: [],
-  showPopUp: false,
   editFlag : false,
   todo : {
     id      : null,
