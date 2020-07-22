@@ -10,17 +10,13 @@ const Messages = () => {
     dispatch = useDispatch(),
     messages  = useSelector(store => store.messages.list, shallowEqual);
 
-  useEffect(() => {
-
-  })
-
   let deleteMessageAction = id => {
     let message = document.getElementById(`message${id}`)
     message.classList.add("delete")
     setTimeout(() => {
       document.getElementById(`message${id}`).classList.remove("delete")
       dispatch(deleteMessage(id))
-    }, 2000)
+    }, 2500)
   }
 
   let mappedMessages = messages.map(message => {

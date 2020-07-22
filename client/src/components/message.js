@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 
 import "../styles/message.scss"
 const Message = ({id, message, deleteMessage}) => {
-  const that = useRef(null)
   useEffect(() => {
     const timer = setTimeout(() => {
       deleteMessage(id)
@@ -11,8 +10,9 @@ const Message = ({id, message, deleteMessage}) => {
       clearTimeout(timer)
     }
   }, [])
+
   return(
-    <div className={`message message__${message.type}`} id={`message${id}`} ref={that}>
+    <div className={`message message__${message.type}`} id={`message${id}`}>
       <span className="message_close" onClick={() => deleteMessage(id)}>X</span>
       {message.text}
     </div>
