@@ -17,18 +17,7 @@ export const setMessage = msgObj => {
 
 export const deleteMessage = id => {
   return (dispatch, getState) => {
-    console.log("id")
-    console.log(id)
-    let list = [...getState().messages.list]
-    let msgIndex = list.findIndex(msg => msg.id === id)
-    list.splice(msgIndex, 1)
-    if(list.length !== 0){ 
-      const lastId = list[list.length-1].id
-      for(let i = msgIndex; i < list.length; i++) {
-        list[i].id = lastId + i
-      }
-    }
-
+    let list = getState().messages.list.filter(msg => msg.id !== id)
     dispatch(setMessages(list))
   }
 }

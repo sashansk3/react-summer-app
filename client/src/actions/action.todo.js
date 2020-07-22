@@ -187,30 +187,35 @@ export function addTodo(){
       ...getState().todos.todo
     }
 
-    if(todo.title === ""){
-      window.alert("Empty title")
-    }
-    else if(todos.find(elem => elem.title === todo.title)){
-      window.alert("Todo with this title already exist")
-    }
-    else if(new Date(todo.deadline) - new Date() < -86400000){
-      window.alert("Incorrect Date")
-    }
-    else{
-      axios
-        .post(`${SERVER_ADDRESS}/todos`, {todo})
-        .then(res => {
-          todo.id = res.data.id
-          todos.push(todo)
-          batch(() => {
-            window.alert("success added")
-            dispatch(setTodos(todos))
-            dispatch(dropTodo())
-          })
+    let resultOfValid = validTodo(todo, todos)
+    axios
+      .post(`${SERVER_ADDRESS}/todos`, {todo})
+      .then(res => {
+        todo.id = res.data.id
+        todos.push(todo)
+        batch(() => {
+          window.alert("success added")
+          dispatch(setTodos(todos))
+          dispatch(dropTodo())
         })
-        .catch(err => {
-          window.alert(err)
-        })
-    }
+      })
+      .catch(err => {
+        window.alert(err)
+      })
+  }
+}
+
+const validTodo = (todo, todos) => {
+  if(todo.title === ""){
+    window.alert("Empty title")
+  }
+  else if(todos.find(elem => elem.title === todo.title)){
+    window.alert("Todo with this title already exist")
+  }
+  else if(new Date(todo.deadline) - new Date() < -86400000){
+    window.alert("Incorrect Date")
+  }
+  else{
+
   }
 }

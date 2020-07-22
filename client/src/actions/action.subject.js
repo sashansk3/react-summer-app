@@ -1,67 +1,101 @@
 import axios from 'axios';
+import { batch } from "react-redux";
 import {SERVER_ADDRESS} from "../config/app.conf"
 
 export const SET_SUBJECTS = 'SET_SUBJECTS'
-export function setSubjects(arr){
-  return{
-    type   : SET_SUBJECTS,
-    payload: arr
+export const setSubjects = arr => ({type: SET_SUBJECTS, payload: arr})
+
+export const SET_SUBJECT = 'SET_SUBJECT'
+export const setSubject = subject => ({type: SET_SUBJECT, payload: subject})
+
+export const SET_EDIT_FLAG = 'SET_EDIT_FLAG'
+export const setEditFlag = flag => ({type: SET_EDIT_FLAG, payload: flag})
+
+export const dropSubject = () => {
+  return dispatch => {
+    const subject = {
+      id       : null,
+      name     : "",
+      week     : "all",
+      type     : "exam",
+      teachers : [],
+      labsCount: 0,
+    }
+    batch(() => {
+      dispatch(setSubject(subject))
+      dispatch(setEditFlag(false))
+    })
   }
 }
 
-export const SET_SHOW_SUBJECT = 'SET_SHOW_SUBJECT'
-export function setShowSubjects(subject){
-  return{
-    type   : SET_SHOW_SUBJECT,
-    payload: subject
-  }
-}
-
-export const setName = data => {
+export const setName = name => {
   return (dispatch, getState) => {
-    let subject = getState().subjects.showSubject
-    subject.name = data
-    dispatch(setShowSubjects(subject))
+    let subject = getState().subjects.subject
+    subject.name = name
+    dispatch(setSubject(subject))
   }
 }
 
-export const setWeek = data => {
+export const setWeek = week => {
   return (dispatch, getState) => {
-    let subject = getState().subjects.showSubject
-    subject.week = data
-    dispatch(setShowSubjects(subject))
+    let subject = getState().subjects.subject
+    subject.week = week
+    dispatch(setSubject(subject))
   }
 }
 
-export const setLabs = data => {
+export const setLabs = labsCount => {
   return (dispatch, getState) => {
-    let subject = getState().subjects.showSubject
-    subject.labs = data
-    dispatch(setShowSubjects(subject))
+    let subject = getState().subjects.subject
+    subject.labs = labsCount
+    dispatch(setSubject(subject))
   }
 }
 
-export const setType = data => {
+export const setType = type => {
   return (dispatch, getState) => {
-    let subject = getState().subjects.showSubject
-    subject.type = data
-    dispatch(setShowSubjects(subject))
+    let subject = getState().subjects.subject
+    subject.type = type
+    dispatch(setSubject(subject))
   }
 }
 
+export const setTeacher = (i, value) => {
+  return (dispatch, getState) => {
+    let teachers = [...getState().subjects.subject.teachers]
+    teachers[i] = value
+    let newSubject = {... getState().subjects.subject, teachers}
+    dispatch(setSubject(newSubject))
+  }
+}
+
+export const addTeacher = () => {
+  return (dispatch, getState) => {
+    let teachers = [...getState().subjects.subject.teachers, ""]
+    let newSubject = {... getState().subjects.subject, teachers}
+    dispatch(setSubject(newSubject))
+  }
+}
+
+export const deleteTeacher = (index) => {
+  return (dispatch, getState) => {
+    let teachers = [...getState().subjects.subject.teachers]
+    teachers.splice(index, 1)
+    let newSubject = {... getState().subjects.subject, teachers}
+    dispatch(setSubject(newSubject))
+  }
+}
 
 export const OPEN_POPUP = 'OPEN_POPUP'
-export function openPopUp(subject){
+export const openPopUp = subject => {
   return dispatch => {
-    dispatch(setShowSubjects(subject))
+    dispatch(setSubject(subject))
     dispatch({type: OPEN_POPUP})
   }
 }
 
 export const CLOSE_POPUP = 'CLOSE_POPUP'
-export function closePopUp(){
-  return {type: CLOSE_POPUP}
-}
+export const closePopUp = () => ({type: CLOSE_POPUP})
 
 export const getSubjects = () => {
   return (dispatch, getState) => {
@@ -82,7 +116,7 @@ export const getSubjects = () => {
 export const deleteSubject = () => {
   return (dispatch, getState) => {
     const
-      id       = getState().subjects.showSubject.id,
+      id       = getState().subjects.subject.id,
       subjects = getState().subjects.subjects;
     axios
       .delete(`${SERVER_ADDRESS}/subjects/:${id}`)
@@ -97,16 +131,12 @@ export const deleteSubject = () => {
   }
 }
 
-export const addSubject = (teachers) => {
+export const addSubject = () => {
   return (dispatch, getState) => {
     const subjects = getState().subjects.subjects
     const subject = {
-      week    : getState().subjects.showSubject.week,
-      teachers: teachers || [],
-      name    : getState().subjects.showSubject.name.trim(),
-      labs    : getState().subjects.showSubject.labs,
-      type    : getState().subjects.showSubject.type,
-      userId  : getState().user.user.id
+      userId  : getState().user.user.id,
+      ...getState().subjects.subject
     }
 
     if(subjects.find(elem => elem.name === subject.name)){
@@ -131,30 +161,29 @@ export const addSubject = (teachers) => {
   }
 }
 
-export const updateSubject = (teachers) => {
+export const updateSubject = () => {
   return (dispatch, getState) => {
     const subjects = getState().subjects.subjects
-    const subject = {
-      id      : getState().subjects.showSubject.id,
-      week    : getState().subjects.showSubject.week,
-      teachers: teachers || [],
-      name    : getState().subjects.showSubject.name.trim(),
-      labs    : getState().subjects.showSubject.labs,
-      type    : getState().subjects.showSubject.type,
-      userId  : getState().user.user.id
+    const editedSubject = {
+      userId  : getState().user.user.id,
+      ...getState().subjects.subject
     }
-  
+    // let result = validateSubject(editedSubject)
     axios
-      .put(`${SERVER_ADDRESS}/subjects`, {subject})
+      .put(`${SERVER_ADDRESS}/subjects`, {subject:editedSubject})
       .then(res => {
-        let newSubjects = subjects.filter(subject => subject.id !== subject.id)
-        newSubjects.push(subject)
+        let newSubjects = subjects.filter(subject => subject.id !== editedSubject.id)
+        newSubjects.push(editedSubject)
         dispatch(setSubjects(newSubjects))
         window.alert("Данные успешно добавлены")
       })
       .catch(err => {
-        console.log(err)
         window.alert(err)
       })
   }
+}
+
+
+const validateSubject = subject => {
+
 }
