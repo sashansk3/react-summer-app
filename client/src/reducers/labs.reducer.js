@@ -3,11 +3,11 @@ import { OPEN_POPUP, CLOSE_POPUP, SET_LAB } from '../actions/labs.actions'
 const initialState = {
   isOpen : false,
   showLab: {
-    id       : null,
-    date     : "",
-    points   : 0,
+    id        : null,
+    date      : "-",
+    points    : 0,
     max_points: 0,
-    status   : "false",
+    status    : "false",
   },
 }
 
