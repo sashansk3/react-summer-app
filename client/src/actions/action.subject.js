@@ -227,7 +227,6 @@ export const updateSubject = () => {
   }
 }
 
-
 const validateSubject = (subject, subjects) => {
   const message = {
     text: "",

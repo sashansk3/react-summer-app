@@ -70,20 +70,12 @@ export const closeEditTodo = () => ({type: CLOSE_EDIT})
 
 export const completeTodo = () => {
   return (dispatch, getState) => {
-    const
-      id    = getState().todos.todo.id,
-      todos = getState().todos.todos,
-      todo  = todos.find(todo => todo.id === id);
-
+    const todo = getState().todos.todo;
     todo.status = !todo.status
-    batch(() => {
-      dispatch(setTodo(todo))
-      dispatch(updateTodo())
-    })
+    dispatch(updateTodo())
   }
 }
 
-// TODO: изменить структуру запроса данных из стора
 export const searchTodo = subStr => {
   return (dispatch, getState) => {
     let tempTodos = [...getState().todos.tempTodos]
@@ -154,7 +146,7 @@ export function deleteTodo(){
 
 export function updateTodo(){
   return (dispatch, getState) => {
-    const todos = getState().todos.todos
+    const todos = [...getState().todos.todos]
     const todo = {
       userId  : getState().user.user.id,
       ...getState().todos.todo
@@ -176,7 +168,7 @@ export function updateTodo(){
           todos.splice(id, 1, todo)
           
           const message = {
-            text: "Successfully added",
+            text: "Successfully updated",
             type: "success"
           }
           batch(() => {
@@ -248,7 +240,7 @@ const validTodo = (todo, todos) => {
   if(todo.title === ""){
     message.text = "Empty title"
   }
-  else if(todos.find(elem => elem.title === todo.title)){
+  else if(todos.find(elem => elem.title === todo.title && elem.id !== todo.id)){
     message.text = "Todo with same title already exist"
   }
 
