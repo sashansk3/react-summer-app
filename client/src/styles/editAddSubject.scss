@@ -8,6 +8,11 @@
   input {
     border-radius: 7px;
     border: 1px solid black;
+    outline: none;
+    
+    &:invalid {
+      border: 2px solid hsl(360, 80%, 55%);
+    }
   }
 
   button {
