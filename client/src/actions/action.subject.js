@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { batch } from "react-redux";
 import {SERVER_ADDRESS} from "../config/app.conf"
+import { setMessage } from "./message.action"
 
 export const SET_SUBJECTS = 'SET_SUBJECTS'
 export const setSubjects = arr => ({type: SET_SUBJECTS, payload: arr})
@@ -89,8 +90,10 @@ export const deleteTeacher = (index) => {
 export const OPEN_POPUP = 'OPEN_POPUP'
 export const openPopUp = subject => {
   return dispatch => {
-    dispatch(setSubject(subject))
-    dispatch({type: OPEN_POPUP})
+    batch(() => {
+      dispatch(setSubject(subject))
+      dispatch({type: OPEN_POPUP})
+    })
   }
 }
 
@@ -108,7 +111,11 @@ export const getSubjects = () => {
         dispatch(setSubjects(result.data))
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })
   }
 }
@@ -122,11 +129,24 @@ export const deleteSubject = () => {
       .delete(`${SERVER_ADDRESS}/subjects/:${id}`)
       .then(result => {
         let newListOfSubjects = subjects.filter(subject => subject.id !== id)
-        dispatch(setSubjects(newListOfSubjects))
-        dispatch(closePopUp())
+        batch(() => {
+          const message = {
+            text: "Successfully deleted",
+            type: "success"
+          }
+          batch(() => {
+            dispatch(setMessage(message))
+            dispatch(setSubjects(newListOfSubjects))
+            dispatch(closePopUp())
+          })
+        })
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })
   }
 }
@@ -138,25 +158,33 @@ export const addSubject = () => {
       userId  : getState().user.user.id,
       ...getState().subjects.subject
     }
+    
+    const result = validateSubject(subject, subjects)
+    if(result.text) {
+      dispatch(setMessage(result))
+      return 0
+    }
 
-    if(subjects.find(elem => elem.name === subject.name)){
-      window.alert("Предмет с таким именем уже существует")
-      return
-    }
-    else if(subject.name === ""){
-      window.alert("Empty name")
-      return
-    }
     axios
       .post(`${SERVER_ADDRESS}/subjects`, {subject})
       .then(res => {
         subject.id = res.data.id
         subjects.push(subject)
-        setSubjects(subjects)
-        window.alert("Данные успешно добавлены")
+        const message = {
+          text: "Successfully added",
+          type: "success"
+        }
+        batch(() => {
+          dispatch(setMessage(message))
+          setSubjects(subjects)
+        })
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })
   }
 }
@@ -164,26 +192,56 @@ export const addSubject = () => {
 export const updateSubject = () => {
   return (dispatch, getState) => {
     const subjects = getState().subjects.subjects
-    const editedSubject = {
+    const subject = {
       userId  : getState().user.user.id,
       ...getState().subjects.subject
     }
-    // let result = validateSubject(editedSubject)
+    const result = validateSubject(subject, subjects)
+    if(result.text) {
+      dispatch(setMessage(result))
+      return 0
+    }
+
     axios
-      .put(`${SERVER_ADDRESS}/subjects`, {subject:editedSubject})
+      .put(`${SERVER_ADDRESS}/subjects`, { subject })
       .then(res => {
-        let newSubjects = subjects.filter(subject => subject.id !== editedSubject.id)
-        newSubjects.push(editedSubject)
-        dispatch(setSubjects(newSubjects))
-        window.alert("Данные успешно добавлены")
+        let newSubjects = subjects.filter(elem => elem.id !== subject.id)
+        newSubjects.push(subject)
+
+        const message = {
+          text: "Successfully updated",
+          type: "success"
+        }
+        batch(() => {
+          dispatch(setMessage(message))
+          dispatch(setSubjects(newSubjects))
+        })
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })
   }
 }
 
 
-const validateSubject = subject => {
+const validateSubject = (subject, subjects) => {
+  const message = {
+    text: "",
+    type: "error"
+  }
 
+  if(subject.name === "") {
+    message.text = "Subject name is empty"
+  }
+  else if(subjects.find(elem => elem.name === subject.name)){
+    message.text = "Subject with same name already exist"
+  }
+  else if(subject.labs < 0 || subject.labs > 15){
+    message.text = "Incorrect labs count"
+  }
+  return message
 }

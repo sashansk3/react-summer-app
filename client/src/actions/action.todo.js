@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { batch } from 'react-redux';
-import {SERVER_ADDRESS} from "../config/app.conf"
-import {setMessage} from "./message.action"
+import { SERVER_ADDRESS } from "../config/app.conf"
+import { setMessage } from "./message.action"
 
 export const SET_TODOS = 'SET_TODOS'
 export const setTodos = arr => ({type: SET_TODOS, payload: arr})
@@ -86,9 +86,8 @@ export const completeTodo = () => {
 // TODO: изменить структуру запроса данных из стора
 export const searchTodo = subStr => {
   return (dispatch, getState) => {
-    let tempTodos = getState().todos.tempTodos
+    let tempTodos = [...getState().todos.tempTodos]
     if(subStr === ""){
-      dispatch(setTempTodos([]))
       dispatch(setTodos(tempTodos))
     }
     else{
@@ -122,7 +121,11 @@ export function getTodos(userId){
         dispatch(setTodos(res.data))
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })
     }
 }
@@ -140,16 +143,28 @@ export function deleteTodo(){
         })
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })
   }
 }
 
 export function updateTodo(){
   return (dispatch, getState) => {
-    let todo = {
+    const todos = getState().todos.todos
+    const todo = {
       userId  : getState().user.user.id,
       ...getState().todos.todo
+    }
+
+    const result = validTodo(todo, todos)
+
+    if(result.text) {
+      dispatch(setMessage(result))
+      return 0
     }
 
     axios
@@ -157,12 +172,11 @@ export function updateTodo(){
       .then(res => {
         let resultOfReq = res.data[0]
         if(resultOfReq){
-          const todos = [...getState().todos.todos]
           let id = todos.findIndex(elem => elem.id === todo.id)
           todos.splice(id, 1, todo)
           
-          let message = {
-            text: "success updated",
+          const message = {
+            text: "Successfully added",
             type: "success"
           }
           batch(() => {
@@ -173,7 +187,11 @@ export function updateTodo(){
         }
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })    
   }
 }
@@ -187,35 +205,52 @@ export function addTodo(){
       ...getState().todos.todo
     }
 
-    let resultOfValid = validTodo(todo, todos)
+    const result = validTodo(todo, todos)
+
+    if(result.text) {
+      dispatch(setMessage(result))
+      return 0
+    }
+
     axios
       .post(`${SERVER_ADDRESS}/todos`, {todo})
       .then(res => {
         todo.id = res.data.id
         todos.push(todo)
+        
+        const message = {
+          text: "Successfully added",
+          type: "success"
+        }
+        
         batch(() => {
-          window.alert("success added")
+          dispatch(setMessage(message))
           dispatch(setTodos(todos))
           dispatch(dropTodo())
         })
       })
       .catch(err => {
-        window.alert(err)
+        const message = {
+          text: err,
+          type: "error"
+        }
+        dispatch(setMessage(message))
       })
   }
 }
 
 const validTodo = (todo, todos) => {
+  const message = {
+    text: "",
+    type: "error"
+  }
+
   if(todo.title === ""){
-    window.alert("Empty title")
+    message.text = "Empty title"
   }
   else if(todos.find(elem => elem.title === todo.title)){
-    window.alert("Todo with this title already exist")
+    message.text = "Todo with same title already exist"
   }
-  else if(new Date(todo.deadline) - new Date() < -86400000){
-    window.alert("Incorrect Date")
-  }
-  else{
 
-  }
+  return message
 }
