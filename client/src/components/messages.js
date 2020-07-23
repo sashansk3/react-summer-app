@@ -14,7 +14,6 @@ const Messages = () => {
     let message = document.getElementById(`message${id}`)
     message.classList.add("delete")
     setTimeout(() => {
-      document.getElementById(`message${id}`).classList.remove("delete")
       dispatch(deleteMessage(id))
     }, 2500)
   }
