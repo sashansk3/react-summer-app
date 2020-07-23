@@ -16,6 +16,7 @@ export default function EditAddSubject() {
     labs     = useSelector(store => store.subjects.subject.labs, shallowEqual),
     type     = useSelector(store => store.subjects.subject.type, shallowEqual);
 
+  console.log(week, teachers, name, labs, type)
   const [page, changePage] = useState(false)
   const 
     setNameAction    = e => dispatch(setName(e.target.value)),
@@ -34,6 +35,12 @@ export default function EditAddSubject() {
 
   const deleteTeacherAction = e => dispatch(deleteTeacher(e.target.dataset.index))
 
+  const updateSubjectAction = e => {
+    let teachers = Object.values(document.getElementsByClassName("newSubject-teacher")).map(teacher => teacher.value.trim()).filter(Boolean)
+    editFlag === "add"?dispatch(addSubject(teachers)):dispatch(updateSubject(teachers))
+    changePage(true)
+  }
+
   if(page) {
     dispatch(dropSubject())
     return <Redirect to="/subjects" />
@@ -46,6 +53,7 @@ export default function EditAddSubject() {
           data-index={id} 
           className="addEditSubject_teacher" 
           placeholder="Teacher Name" 
+          maxLength="50"
           value={teacherName} 
           onChange={setTeacherAction}
         />
@@ -56,18 +64,13 @@ export default function EditAddSubject() {
     )
   })
 
-  const updateSubjectAction = e => {
-    let teachers = Object.values(document.getElementsByClassName("newSubject-teacher")).map(teacher => teacher.value.trim()).filter(Boolean)
-    editFlag === "add"?dispatch(addSubject(teachers)):dispatch(updateSubject(teachers))
-    changePage(true)
-  }
-
   return(
     <div className="addEditSubject">
       <label>Name</label>
       <input 
         className="addEditSubject_name" 
-        placeholder="Name" 
+        placeholder="Name"
+        maxLength="30"
         onChange={setNameAction} 
         value={name}
       />
@@ -103,7 +106,11 @@ export default function EditAddSubject() {
       <input 
         className="addEditSubject_labs"
         onChange={setLabsAction}
+        type="number"
+        min="0"
+        max="15"
         placeholder="Count of labs"
+        onKeyUp
         value={labs}
       />
       

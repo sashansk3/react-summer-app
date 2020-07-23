@@ -45,7 +45,6 @@ const EditAddTodo = props => {
       <input 
         data-field="title"
         placeholder="Title"
-        required
         maxLength="40"
         onChange={handleTodoChangeAction}
         value={title}
