@@ -1,34 +1,26 @@
 .subject {
   display: grid;
-  width: 10rem;
-  height: 10rem;
-  border: 1px solid black;
-  grid-template-areas: "name week"
-                       "teachers teachers"
-                       "labs type";
-  grid-template-rows: 1fr 2fr 1fr;
+  border: 1.5px solid black;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 18px;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .subject_name {
-  grid-area: name;
 }
 
 .subject_week {
-  grid-area: week;
-  justify-self: end;
-  width: min-content;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
 }
 
-.subject_teachers {
-  grid-area: teachers;
+.subject_week__odd {
+  color: #3DE96D;
+}
+
+.subject_week__even {
+  color: #EB0707;
 }
 
 .subject_labs {
-  grid-area: labs;
-}
-
-.subject_type {
-  grid-area: type;
 }

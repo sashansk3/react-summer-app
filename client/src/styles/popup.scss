@@ -1,0 +1,15 @@
+.popup {
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 5;
+}
+
+.popup_content {
+  z-index: 6;
+}

@@ -24,7 +24,16 @@
   display: grid;
   grid-template-columns: 10fr 1fr;
   grid-gap: 5px;
-  
+}
+
+.addEditSubject_teacher {
+  animation: mount .5s;
+}
+
+@keyframes mount {
+  to {
+    opacity: 1;
+  }
 }
 
 .addEditSubject_delete-teacher {
@@ -35,6 +44,7 @@
   border-radius: 10px;
   justify-self: center;
   transition: .75s;
+  animation: mount .5s;
 
   &:hover {
     transform: scale(1.2);
