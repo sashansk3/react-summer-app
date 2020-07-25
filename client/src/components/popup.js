@@ -20,8 +20,8 @@ export default function PopUp(props){
   }
   let style = props.isOpen? {display: "flex"}: {display: "none"}
   return(
-    <div className="PopUp" ref={popup} style={style} onClick={closePopUp}>
-      <div className="PopUpContent" ref={popupContent}>
+    <div className="popup" ref={popup} style={style} onClick={closePopUp}>
+      <div className="popup_content" ref={popupContent}>
         {props.children}
       </div>
     </div>
