@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 
 import { deleteMessage } from '../actions/message.action'
@@ -17,21 +17,16 @@ const Messages = () => {
       dispatch(deleteMessage(id))
     }, 2500)
   }
-
-  let mappedMessages = messages.map(message => {
-    return(
-      <Message 
-        key           = {message.id}
-        deleteMessage = {deleteMessageAction}
-        message       = {message}
-        id            = {message.id}
-      />
-    )
-  })
-
   return(
     <div className="messages">
-      {mappedMessages}
+      {messages.map(message =>
+          <Message 
+            key           = {message.id}
+            id            = {message.id}
+            message       = {message}
+            deleteMessage = {deleteMessageAction}
+          />
+      )}
     </div>
   )
 }
