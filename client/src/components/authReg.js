@@ -51,7 +51,9 @@ export default function AuthReg() {
             <button ref={signInBtn} onClick={changeContent} className="signIn choise">signIn</button>
             <button ref={signUpBtn} onClick={changeContent} className="signUp">signUp</button>
           </div>
-            {isLogin?<Auth />: <Reg/>}
+            {isLogin
+              ?<Auth />
+              :<Reg/>}
         </div>
       </PopUp>
     </div>
