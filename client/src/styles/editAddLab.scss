@@ -1,0 +1,71 @@
+.edit-add_popup {
+  display: grid;
+  justify-content: center;
+  width: 30rem;
+  height: 20rem;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 20px;
+  font-size: 18px;
+  background-color: white;
+  grid-template-columns: 1fr 1fr;
+
+  button {
+    padding: 0 5px;
+    border: 0;
+    margin: 0 auto;
+    border-radius: 10px;
+    width: 60%;
+    font-size: 1.2rem;
+    color: white;
+    border: 2px solid transparent;
+    transition: .2s;  
+  }
+}
+
+.edit-add_status-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+
+  .active {
+    border: 1px solid black;
+  }
+
+  div {
+    border: 1px solid transparent;
+    width: 3rem;
+    height: 3rem;  
+    border-radius: 10px;
+  }
+}
+
+.popup_status-button__complete {
+  background-color: green;
+}
+
+.popup_status-button__inProgress {
+  background-color: yellow;
+}
+
+.popup_status-button__failed {
+  background-color: red;
+}
+
+.edit-add_update-btn{
+  background-color: green;
+  &:hover {
+    background-color: white;
+    color: green;
+    border: 2px solid green;
+  }
+}
+
+.edit-add_close-btn{
+  background-color: hsl(0, 94%, 47%);
+  &:hover {
+    background-color: white;
+    color: hsl(0, 94%, 47%);
+    border: 2px solid hsl(0, 94%, 47%);
+  }
+}

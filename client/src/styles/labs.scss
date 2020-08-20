@@ -1,0 +1,73 @@
+.labs {
+  display: grid;
+  width: 40%;
+  margin: 20px auto;
+  grid-gap: 20px;
+}
+
+.labs_wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 15px;
+  font-size: 1.5rem;
+}
+
+.labs_add-btn {
+  width: 3rem;
+  height: 3rem;
+  border: 0px;
+  border-radius: 30px;
+  margin: 10px auto;
+  background-color: red;
+}
+
+.labs_wrapper_list {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  grid-gap: 10px;
+}
+
+.labs_popup {
+  width: 30rem;
+  height: 20rem;
+  background-color: white;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 20px;
+  font-size: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  button {
+    padding: 0 5px;
+    border: 0;
+    margin: 0 auto;
+    border-radius: 10px;
+    width: 60%;
+    font-size: 1.2rem;
+    color: white;
+    border: 2px solid transparent;
+    transition: .2s;
+  }
+}
+
+.labs_popup_delete-btn{
+  background-color: hsl(0, 94%, 47%);
+  &:hover {
+    background-color: white;
+    color: hsl(0, 94%, 47%);
+    border: 2px solid hsl(0, 94%, 47%);
+  }
+}
+
+.labs_popup_edit-btn{
+  background-color: hsl(45,100%,51.4%);
+  &:hover {
+    background-color: white;
+    color: hsl(45,100%,51.4%);
+    border: 2px solid hsl(45,100%,51.4%);
+  }
+}

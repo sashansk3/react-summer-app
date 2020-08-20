@@ -1,7 +1,7 @@
 .todo_editAdd {
   width: 80%;
   display: grid;
-  grid-template: 50px 1fr 50px 50px 25px / 1fr 3fr;
+  grid-template: 50px 1fr 50px 50px 25px / 1fr 4fr;
   align-items: center;
 
   input, textarea {
@@ -32,6 +32,13 @@
     border-radius: 10px;
     outline: none;
   }
+}
+
+.todo_editAdd section {
+  grid-area: 5 / 1 / 5 / 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
 }
 
 .todo_updateBtn {

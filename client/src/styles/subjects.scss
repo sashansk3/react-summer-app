@@ -1,4 +1,52 @@
-.subjects-list {
+.subjects {
+  display: grid;
+  width: 60%;
+  margin: 0 auto;
+  grid-template-columns: 1fr 1fr;
+}
+
+.subjects_filters {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.subjects_list {
   display: grid;
   grid-gap: 5px;
+  margin-bottom: auto;
+}
+
+.subjects_content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 40px;
+  font-size: 1.2rem;
+  button {
+    padding: 0 5px;
+    margin: 2px;
+    border: 0;
+    font-size: 1.2rem;
+    color: white;
+    border: 2px solid transparent;
+    transition: .2s;
+  }
+}
+
+.subjects_editBtn {
+  background-color: hsl(45,100%,51.4%);
+  &:hover {
+    background-color: white;
+    color: hsl(45,100%,51.4%);
+    border: 2px solid hsl(45,100%,51.4%);
+  }
+}
+
+.subjects_deleteBtn {
+  background-color: hsl(360, 80%, 55%);
+  &:hover {
+    background-color: white;
+    color: hsl(360, 80%, 55%);
+    border: 2px solid hsl(360, 80%, 55%);
+  }
 }
