@@ -31,7 +31,7 @@ export const dropSubject = () => {
 
 export const setName = name => {
   return (dispatch, getState) => {
-    let subject = getState().subjects.subject
+    let subject = {...getState().subjects.subject}
     subject.name = name
     dispatch(setSubject(subject))
   }
@@ -61,11 +61,11 @@ export const setType = type => {
   }
 }
 
-export const setTeacher = (i, value) => {
+export const setTeacher = (index, value) => {
   return (dispatch, getState) => {
     let teachers = [...getState().subjects.subject.teachers]
-    teachers[i] = value
-    let newSubject = {... getState().subjects.subject, teachers}
+    teachers[index] = value
+    let newSubject = {...getState().subjects.subject, teachers}
     dispatch(setSubject(newSubject))
   }
 }
@@ -73,7 +73,7 @@ export const setTeacher = (i, value) => {
 export const addTeacher = () => {
   return (dispatch, getState) => {
     let teachers = [...getState().subjects.subject.teachers, ""]
-    let newSubject = {... getState().subjects.subject, teachers}
+    let newSubject = {...getState().subjects.subject, teachers}
     dispatch(setSubject(newSubject))
   }
 }
@@ -82,23 +82,10 @@ export const deleteTeacher = (index) => {
   return (dispatch, getState) => {
     let teachers = [...getState().subjects.subject.teachers]
     teachers.splice(index, 1)
-    let newSubject = {... getState().subjects.subject, teachers}
+    let newSubject = {...getState().subjects.subject, teachers}
     dispatch(setSubject(newSubject))
   }
 }
-
-export const OPEN_POPUP = 'OPEN_POPUP'
-export const openPopUp = subject => {
-  return dispatch => {
-    batch(() => {
-      dispatch(setSubject(subject))
-      dispatch({type: OPEN_POPUP})
-    })
-  }
-}
-
-export const CLOSE_POPUP = 'CLOSE_POPUP'
-export const closePopUp = () => ({type: CLOSE_POPUP})
 
 export const getSubjects = () => {
   return (dispatch, getState) => {
@@ -129,16 +116,14 @@ export const deleteSubject = () => {
       .delete(`${SERVER_ADDRESS}/subjects/:${id}`)
       .then(result => {
         let newListOfSubjects = subjects.filter(subject => subject.id !== id)
+        
+        const message = {
+          text: "Successfully deleted",
+          type: "success"
+        }
         batch(() => {
-          const message = {
-            text: "Successfully deleted",
-            type: "success"
-          }
-          batch(() => {
-            dispatch(setMessage(message))
-            dispatch(setSubjects(newListOfSubjects))
-            dispatch(closePopUp())
-          })
+          dispatch(setMessage(message))
+          dispatch(setSubjects(newListOfSubjects))
         })
       })
       .catch(err => {
@@ -236,7 +221,7 @@ const validateSubject = (subject, subjects) => {
   if(subject.name === "") {
     message.text = "Subject name is empty"
   }
-  else if(subjects.find(elem => elem.name === subject.name)){
+  else if(subjects.find(elem => elem.name === subject.name && elem.id !== subject.id)){
     message.text = "Subject with same name already exist"
   }
   else if(subject.labs < 0 || subject.labs > 15){
