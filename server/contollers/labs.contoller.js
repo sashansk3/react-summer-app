@@ -1,3 +1,5 @@
+const { labs } = require('../models');
+
 const 
   model = require('../models'),
   Labs = model.labs,
@@ -17,12 +19,24 @@ exports.getAll = (req, res) => {
     })
 }
 
+exports.create = (req, res) => {
+  const lab = req.body.lab
+ 
+  Labs
+    .create(todo)
+    .then(todos => {
+      res.json(todos.dataValues)
+    })
+    .catch(err => {
+      res.status(500).send(err)
+    })
+}
+
 exports.update = (req, res) => {
   let 
     lab = req.body.lab,
     id = req.params.id.slice(1);
 
-  console.log(lab)
   Labs
     .update(lab, {
       where: {id}
@@ -33,4 +47,8 @@ exports.update = (req, res) => {
     .catch(err => {
       res.status(500).send(err)
     })
+}
+
+exports.delete = (req, res) => {
+
 }

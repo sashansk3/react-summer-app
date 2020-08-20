@@ -14,7 +14,9 @@ export default function Todos(){
     todo     = useSelector(store => store.todos.todo, shallowEqual),
     editFlag = useSelector(store => store.todos.editFlag, shallowEqual);
 
-  useEffect(() => dispatch(getTodos(user.id)), [])
+  useEffect(() => {
+    dispatch(getTodos(user.id))
+  }, [dispatch, user.id])
 
   const searchTodoAction = (e) => {
     let subStr = e.target.value.toLowerCase()

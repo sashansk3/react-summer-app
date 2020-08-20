@@ -26,10 +26,8 @@ export default function Router(){
 
   if(location.state?.from.pathname && !userId){
     const message = {
-      text: `
-        You has been redirected from url ${location.state?.from.pathname}.
-        Auth to get accsess to this url.
-        `,
+      text: `You has been redirected from url ${location.state?.from.pathname}.
+        Auth to get accsess to this url.`,
       type: "info"
     }
     dispatch(setMessage(message))
@@ -42,8 +40,11 @@ export default function Router(){
         {
           userId
           ?(
-            routes.map(({path, component}) => <Route exact path={path} component={component} />)
-          ):(
+            routes.map(({path, component}, index) => {
+              return <Route key={index} exact path={path} component={component} />
+            })
+          )
+          :(
             <Redirect to={{
               pathname: "/",
               state: { from: location }
